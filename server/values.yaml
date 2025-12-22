@@ -1,0 +1,82 @@
+# Default values for server
+replicaCount: 3
+
+image:
+  repository: votre_username/mern-server  # TODO: Changez avec votre username
+  pullPolicy: IfNotPresent
+  tag: "latest"
+
+imagePullSecrets: []
+nameOverride: ""
+fullnameOverride: "server"
+
+serviceAccount:
+  create: true
+  automount: true
+  annotations: {}
+  name: ""
+
+podAnnotations: {}
+podLabels: {}
+
+podSecurityContext: {}
+
+securityContext: {}
+
+service:
+  type: ClusterIP
+  port: 5000
+  nodePort: 30001  # Utilisé si type est NodePort
+
+resources:
+  limits:
+    cpu: 200m
+    memory: 256Mi
+  requests:
+    cpu: 100m
+    memory: 128Mi
+
+env:
+  - name: MONGO_URI
+    value: "mongodb://mongodb:27017/mern-app"
+  - name: PORT
+    value: "5000"
+  - name: NODE_ENV
+    value: "production"
+
+livenessProbe:
+  httpGet:
+    path: /
+    port: 5000
+  initialDelaySeconds: 30
+  periodSeconds: 10
+
+readinessProbe:
+  httpGet:
+    path: /
+    port: 5000
+  initialDelaySeconds: 10
+  periodSeconds: 5
+
+autoscaling:
+  enabled: false
+  minReplicas: 3
+  maxReplicas: 10
+  targetCPUUtilizationPercentage: 80
+
+nodeSelector: {}
+
+tolerations: []
+
+affinity: {}
+
+ingress:
+  enabled: false
+  className: ""
+  annotations: {}
+  hosts:
+    - host: server.local
+      paths:
+        - path: /
+          pathType: Prefix
+  tls: []
