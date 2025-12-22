@@ -2,7 +2,7 @@
 replicaCount: 3
 
 image:
-  repository: votre_username/mern-server  # TODO: Changez avec votre username
+  repository: yasmin952/mern-server  
   pullPolicy: IfNotPresent
   tag: "latest"
 
@@ -80,3 +80,5 @@ ingress:
         - path: /
           pathType: Prefix
   tls: []
+httpRoute:
+  enabled: false

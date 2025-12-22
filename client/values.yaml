@@ -2,7 +2,7 @@
 replicaCount: 3
 
 image:
-  repository: votre_username/mern-client  # TODO: Changez avec votre username
+  repository: yasmin952/mern-client  
   pullPolicy: IfNotPresent
   tag: "latest"
 
@@ -67,6 +67,10 @@ nodeSelector: {}
 tolerations: []
 
 affinity: {}
+
+httpRoute:
+  enabled: false
+
 
 ingress:
   enabled: true

@@ -53,6 +53,14 @@ persistence:
   accessMode: ReadWriteOnce
   size: 8Gi
 
+ingress:
+  enabled: false
+httpRoute:
+  enabled: false
+autoscaling:
+  enabled: false
+
+
 nodeSelector: {}
 
 tolerations: []

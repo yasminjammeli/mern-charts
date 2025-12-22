@@ -1,0 +1,120 @@
+# Global values for MERN App
+global:
+  environment: production
+
+# Global image (pour deployment.yaml)
+image:
+  repository: yasmin952/mern-server
+  tag: latest
+  pullPolicy: IfNotPresent
+
+# Global service port (pour test-connection.yaml)
+service:
+  type: ClusterIP 
+  port: 5000
+
+# Global serviceAccount (pour templates)
+serviceAccount:
+  create: true
+  automount: true
+  annotations: {}
+  name: ""
+ingress:
+  enabled: false
+  className: ""
+  annotations: {}
+  hosts: []
+  tls: []
+
+# Global httpRoute (pour templates)
+httpRoute:
+  enabled: false
+  annotations: {}
+  parentRefs: []
+  hostnames: []
+  rules: []
+# Global autoscaling (pour templates hpa.yaml)
+autoscaling:
+  enabled: false
+  minReplicas: 1
+  maxReplicas: 10
+  targetCPUUtilizationPercentage: 80
+# MongoDB configuration
+mongodb:
+  replicaCount: 1
+  image:
+    repository: mongo
+    tag: latest
+  service:
+    type: ClusterIP
+    port: 27017
+  ingress:
+    enabled: false
+    annotations: {}
+    hosts: []
+    tls: []
+  httpRoute:
+    enabled: false
+    annotations: {}
+    parentRefs: []
+    hostnames: []
+    rules: []
+  autoscaling:
+    enabled: false
+    minReplicas: 1
+    maxReplicas: 3
+    targetCPUUtilizationPercentage: 80
+
+# Server configuration
+server:
+  replicaCount: 3
+  image:
+    repository: yasmin952/mern-server 
+    tag: latest
+  service:
+    type: NodePort
+    port: 5000
+    nodePort: 30001
+  env:
+    - name: MONGO_URI
+      value: "mongodb://mern-app-mongodb:27017/mern-app"
+    - name: PORT
+      value: "5000"
+  httpRoute:
+    enabled: false
+    annotations: {}
+    parentRefs: []
+    hostnames: []
+    rules: []
+  autoscaling:
+    enabled: false
+    minReplicas: 3
+    maxReplicas: 10
+    targetCPUUtilizationPercentage: 80
+
+# Client configuration
+client:
+  replicaCount: 3
+  image:
+    repository: yasmin952/mern-client 
+    tag: latest
+  service:
+    type: NodePort
+    port: 3000
+    nodePort: 30002
+  env:
+    - name: REACT_APP_SERVER_URL
+      value: "http://mern-app-server:5000"
+  ingress:
+    enabled: false
+  httpRoute:
+    enabled: false
+    annotations: {}
+    parentRefs: []
+    hostnames: []
+    rules: []
+  autoscaling:
+    enabled: false
+    minReplicas: 3
+    maxReplicas: 10
+    targetCPUUtilizationPercentage: 80
